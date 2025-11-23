@@ -1,40 +1,34 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:food_application/features/cart/widget/cart_item.dart';
+import 'package:food_application/features/checkout/views/checkout_view.dart';
 import 'package:food_application/shared/custom_btn.dart';
 import 'package:food_application/shared/custom_text.dart';
-
 class CartView extends StatefulWidget {
   const CartView({super.key});
-
   @override
   State<CartView> createState() => _CartViewState();
 }
-
 class _CartViewState extends State<CartView> {
   int itemCount = 20;
   late List<int> quantites;
-
   @override
   void initState() {
     quantites = List.generate(20, (_) => 1);
     super.initState();
   }
-
-  void onAdd(index) {
+  void onAdd(int index) {
     setState(() {
       quantites[index]++;
     });
   }
-
-  void onMinus(index) {
+  void onMinus(int index) {
     setState(() {
       if (quantites[index] > 1) {
         quantites[index]--;
       }
     });
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,17 +50,12 @@ class _CartViewState extends State<CartView> {
               title: "Hamburger",
               description: "Veggie Burger",
               number: quantites[index],
-              onAdd: (){
-                onAdd(index);
-              },
-              onMinus: (){
-                onMinus(index);
-              },
+              onAdd: () => onAdd(index),
+              onMinus: () => onMinus(index),
             );
           },
         ),
       ),
-
       bottomSheet: Container(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         height: 100,
@@ -95,7 +84,11 @@ class _CartViewState extends State<CartView> {
                 CustomText(title: '\$ 200.50', size: 24),
               ],
             ),
-            CustomBtn(text: 'Checkout', onTap: () {}),
+            CustomBtn(text: 'Checkout', onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context){
+                return CheckoutView();
+              }));
+            }),
           ],
         ),
       ),
