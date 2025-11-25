@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:food_application/core/constants/app_colors.dart';
 import 'package:food_application/shared/custom_text.dart';
+import 'package:gap/gap.dart';
 
 class ProductCard extends StatelessWidget {
   final String title;
@@ -19,25 +21,24 @@ class ProductCard extends StatelessWidget {
     return Stack(
       clipBehavior: Clip.none,
       children: [
-
         ClipRRect(
           borderRadius: BorderRadius.circular(15),
           child: Container(
-            height: 85,
-            width: 110,
-            color: Color(0xff3C2F2F),
-            child: Column(children: [],),
+            height: 90,
+            width: 90,
+            color: AppColors.primary,
           ),
         ),
         //Image Section
         Positioned(
           top: -40,
-          right: -5,
-          left: -5,
+          right: -1,
+          left: -1,
           child: SizedBox(
-            height: 80,
-            width: 70,
-            child: Card(
+            height: 70,
+            child: Material(
+              elevation: 2,
+              borderRadius: BorderRadius.circular(15),
               color: Colors.white,
               child: Image.asset(image,fit: BoxFit.contain),
             ),
@@ -49,13 +50,13 @@ class ProductCard extends StatelessWidget {
           left: 0,
           bottom: 0,
           child: Padding(padding: EdgeInsets.all(12),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: Column(
               children: [
                 CustomText(title: title,
                   color: Colors.white,
                   size: 14,
                   weight: FontWeight.w600,),
+                Gap(5),
                 GestureDetector(
                   onTap: onAdd,
                   child: CircleAvatar(

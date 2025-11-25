@@ -45,7 +45,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                 child: Row(
                   children: List.generate(4, (index) {
                     return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      padding: const EdgeInsets.only(right: 8.0),
                       child: ProductCard(
                         colorIcon: Colors.red,
                         title: "Tomato",
@@ -65,9 +65,9 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                 child: Row(
                   children: List.generate(4, (index) {
                     return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      padding: const EdgeInsets.only(right: 8.0),
                       child: ProductCard(
-                        colorIcon: AppColors.primary,
+                        colorIcon: Colors.red,
                         title: "Tomato",
                         image: "assets/test/tomote.png",
                         onAdd: () {},
@@ -76,26 +76,43 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                   }),
                 ),
               ),
-              Gap(50),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CustomText(title: 'Total ', size: 15),
-                      CustomText(title: '\$ 200.50', size: 24),
-                    ],
-                  ),
-                  CustomBtn(text: 'Add to Cart', onTap: () {}),
-                ],
-              ),
-              Gap(100),
+
+              Gap(200),
 
 
             ],
           ),
         ),
+      ),
+      bottomSheet: Container(
+        height: 120,
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(30),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.shade800,
+                blurRadius: 15,
+                offset: Offset(0, 0),
+              )
+            ]
+        ),
+        child:Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CustomText(title: 'Total ', size: 15),
+                  CustomText(title: '\$ 200.50', size: 24),
+                ],
+              ),
+              CustomBtn(text: 'Add to Cart', onTap: () {}),
+            ],
+          ),
+        ) ,
       ),
     );
   }

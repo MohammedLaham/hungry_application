@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:food_application/root.dart';
-void main() {
+import 'package:flutter/services.dart';
+import 'package:food_application/splash.dart';
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp
+  ]);
   runApp(const MyApp());
 }
 
@@ -15,7 +20,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.white
       ),
       title: 'Hungry App',
-      home: Root(),
+      home: SplashView(),
     );
   }
 }

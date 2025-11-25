@@ -33,19 +33,21 @@ class OrderHistoryView extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Image.asset('assets/test/test.png', width: 100),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            CustomText(
-                              title: 'Hamburger',
-                              weight: FontWeight.bold,
-                            ),
-                            CustomText(title: 'Qty : X3'),
-                            CustomText(
-                              title: 'Price : 20\$',
-                              weight: FontWeight.bold,
-                            ),
-                          ],
+                        Flexible(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CustomText(
+                                title: 'Hamburger',
+                                weight: FontWeight.bold,
+                              ),
+                              CustomText(title: 'Qty : X3'),
+                              CustomText(
+                                title: 'Price : 20\$',
+                                weight: FontWeight.bold,
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),

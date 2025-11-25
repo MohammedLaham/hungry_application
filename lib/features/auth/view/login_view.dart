@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:food_application/core/constants/app_colors.dart';
+import 'package:food_application/features/auth/view/signup_view.dart';
+import 'package:food_application/root.dart';
 import 'package:food_application/shared/custom_button.dart';
 import 'package:food_application/shared/custom_text.dart';
 import 'package:food_application/shared/custom_txtfield.dart';
@@ -13,50 +15,101 @@ class LoginView extends StatelessWidget {
   Widget build(BuildContext context) {
     TextEditingController emailController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
-    final GlobalKey<FormState> formKey=GlobalKey<FormState>();
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
-        backgroundColor: AppColors.primary,
+        backgroundColor: Colors.white,
         body: Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: Form(
-              key: formKey,
-              child: Column(
-                children: [
-                  Gap(100),
-                  SvgPicture.asset('assets/logo/logo.svg'),
-                  Gap(10),
-                  CustomText(
-                    title: 'Welcome Back, Discover The Fast Food',
-                    color: Colors.white,
-                    weight: FontWeight.w500,
-                    size: 13,
-                  ),
-                  Gap(60),
-                  CustomTxtfield(
-                    controller: emailController,
-                    hintText: 'Email Address',
-                    isPassword: false,
-                  ),
-                  Gap(20),
-                  CustomTxtfield(
-                    controller: passwordController,
-                    hintText: 'Password',
-                    isPassword: true,
-                  ),
-                  Gap(30),
-                  CustomAuthButton(text: 'Login',onTap: (){
-                    if(formKey.currentState!.validate()){
-                      print('Success login');
-                    }
-                  },)
+          child: Form(
+            key: formKey,
+            child: Column(
+              children: [
+                Gap(200),
+                SvgPicture.asset(
+                  'assets/logo/logo.svg',
+                  color: AppColors.primary,
+                ),
+                Gap(10),
+                CustomText(
+                  title: 'Welcome Back, Discover The Fast Food',
+                  color: AppColors.primary,
+                  weight: FontWeight.w500,
+                  size: 13,
+                ),
+                Gap(60),
+                Expanded(
+                  child: Container(
+                    padding: EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: AppColors.primary,
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(30),
+                        topLeft: Radius.circular(30),
+                      ),
+                    ),
+                    child: Column(
+                      children: [
+                        Gap(30),
+                        CustomTxtfield(
+                          controller: emailController,
+                          hintText: 'Email Address',
+                          isPassword: false,
+                        ),
+                        Gap(15),
+                        CustomTxtfield(
+                          controller: passwordController,
+                          hintText: 'Password',
+                          isPassword: true,
+                        ),
+                        Gap(20),
+                        CustomAuthButton(
+                          text: 'Login',
+                          color: Colors.transparent,
+                          textColor: Colors.white,
+                          onTap: () {
+                            if (formKey.currentState!.validate()) {
+                              print('Success login');
+                            }
+                          },
+                        ),
+                        Gap(15),
+                        //Go To Sign Up
+                        CustomAuthButton(
+                          text: 'Don\'t have Account?',
 
-                ],
-              ),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (c) {
+                                  return SignupView();
+                                },
+                              ),
+                            );
+                          },
+                        ),
+                        Gap(20),
+                        GestureDetector(
+                          onTap:  () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) {
+                                  return Root();
+                                },
+                              ),
+                            );
+                          },
+                          child:CustomText(title: 'Continue as a guest',color: Colors.orange,size: 18,weight: FontWeight.bold,) ,)
+
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ),

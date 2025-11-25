@@ -28,7 +28,6 @@ class _CheckoutViewState extends State<CheckoutView> {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: SingleChildScrollView(
-
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -57,7 +56,10 @@ class _CheckoutViewState extends State<CheckoutView> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
-                contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                contentPadding: EdgeInsets.symmetric(
+                  vertical: 8,
+                  horizontal: 16,
+                ),
                 tileColor: Color(0xff3C2F2F),
                 leading: Image.asset('assets/icon/cash.png', width: 50),
                 title: CustomText(
@@ -78,7 +80,10 @@ class _CheckoutViewState extends State<CheckoutView> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
-                contentPadding: EdgeInsets.symmetric(vertical: 2, horizontal: 16),
+                contentPadding: EdgeInsets.symmetric(
+                  vertical: 2,
+                  horizontal: 16,
+                ),
                 tileColor: Colors.blue.shade900,
                 leading: Image.asset(
                   'assets/icon/visa.png',
@@ -103,12 +108,11 @@ class _CheckoutViewState extends State<CheckoutView> {
                   Checkbox(
                     value: true,
                     onChanged: (v) {},
-                    activeColor: AppColors.primary
+                    activeColor: AppColors.primary,
                   ),
                   CustomText(title: 'Save card details for future payments'),
                 ],
               ),
-
             ],
           ),
         ),
@@ -121,13 +125,13 @@ class _CheckoutViewState extends State<CheckoutView> {
           boxShadow: [
             BoxShadow(
               color: Colors.grey.shade800,
-              blurRadius: 15,
+              blurRadius: 20,
               offset: Offset(0, 0),
-            )
-          ]
+            ),
+          ],
         ),
-        child:   Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 20),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -139,12 +143,20 @@ class _CheckoutViewState extends State<CheckoutView> {
                   CustomText(title: '\$ 200.50', size: 24),
                 ],
               ),
-              CustomBtn(text: 'Pay Now ', onTap: () {
-                showDialog(context: context, builder: (_){
-                  return SuccessDialog();
-                });
-
-              }),
+              CustomBtn(
+                text: 'Pay Now ',
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (_) {
+                      return Dialog(
+                        backgroundColor: Colors.transparent,
+                        child: SuccessDialog(),
+                      );
+                    },
+                  );
+                },
+              ),
             ],
           ),
         ),
