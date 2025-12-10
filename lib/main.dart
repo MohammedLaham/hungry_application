@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:food_application/features/auth/view/login_view.dart';
 import 'package:food_application/splash.dart';
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.white
       ),
       title: 'Hungry App',
-      home: SplashView(),
+      home: LoginView(),
     );
   }
 }

@@ -1,6 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:food_application/core/constants/app_colors.dart';
+import 'package:food_application/core/network/api_error.dart';
+import 'package:food_application/features/auth/data/auth_repo.dart';
 import 'package:food_application/features/auth/view/signup_view.dart';
 import 'package:food_application/root.dart';
 import 'package:food_application/shared/custom_button.dart';
@@ -8,14 +11,47 @@ import 'package:food_application/shared/custom_text.dart';
 import 'package:food_application/shared/custom_txtfield.dart';
 import 'package:gap/gap.dart';
 
-class LoginView extends StatelessWidget {
+class LoginView extends StatefulWidget {
   const LoginView({super.key});
 
   @override
+  State<LoginView> createState() => _LoginViewState();
+}
+
+class _LoginViewState extends State<LoginView> {
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  bool isLoading = false;
+  AuthRepo authRepo = AuthRepo();
+  @override
   Widget build(BuildContext context) {
-    TextEditingController emailController = TextEditingController();
-    TextEditingController passwordController = TextEditingController();
-    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+    Future<void> login() async {
+      setState(() => isLoading = true);
+      if (formKey.currentState!.validate()) {
+        try {
+          final user = await authRepo.login(
+            emailController.text.trim(),
+            passwordController.text.trim(),
+          );
+          if (user != null) {
+            Navigator.push(context, MaterialPageRoute(builder: (c) => Root()));
+          }
+          setState(() => isLoading = false);
+        } catch (e) {
+          setState(() => isLoading = false);
+          String errorMessage = 'unhandledError in Login page';
+          if (e is ApiError) {
+            errorMessage = e.toString();
+          }
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(errorMessage)));
+        }
+      }
+    }
+
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -65,16 +101,15 @@ class LoginView extends StatelessWidget {
                           isPassword: true,
                         ),
                         Gap(20),
-                        CustomAuthButton(
-                          text: 'Login',
-                          color: Colors.transparent,
-                          textColor: Colors.white,
-                          onTap: () {
-                            if (formKey.currentState!.validate()) {
-                              print('Success login');
-                            }
-                          },
-                        ),
+                        //Login Button
+                        isLoading
+                            ? CupertinoActivityIndicator(color: Colors.white)
+                            : CustomAuthButton(
+                                text: 'Login',
+                                color: Colors.transparent,
+                                onTap: login,
+                                textColor: Colors.white,
+                              ),
                         Gap(15),
                         //Go To Sign Up
                         CustomAuthButton(
@@ -93,7 +128,7 @@ class LoginView extends StatelessWidget {
                         ),
                         Gap(20),
                         GestureDetector(
-                          onTap:  () {
+                          onTap: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -103,8 +138,13 @@ class LoginView extends StatelessWidget {
                               ),
                             );
                           },
-                          child:CustomText(title: 'Continue as a guest',color: Colors.orange,size: 18,weight: FontWeight.bold,) ,)
-
+                          child: CustomText(
+                            title: 'Continue as a guest',
+                            color: Colors.orange,
+                            size: 18,
+                            weight: FontWeight.bold,
+                          ),
+                        ),
                       ],
                     ),
                   ),
