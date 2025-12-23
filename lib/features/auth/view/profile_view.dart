@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:food_application/core/constants/app_colors.dart';
+import 'package:food_application/features/auth/view/login_view.dart';
 import 'package:food_application/features/auth/widgets/custom_user_txt_field.dart';
 import 'package:gap/gap.dart';
 
@@ -93,28 +94,18 @@ class _ProfileViewState extends State<ProfileView> {
                   title: '**** ****** 0568',
                   color: Colors.black,
                 ),
-                trailing:CustomText(
-                  title: 'Default',
-                  color: Colors.black,
-                )
-                ),
-              Gap(400)
-
+                trailing: CustomText(title: 'Default', color: Colors.black),
+              ),
+              Gap(400),
             ],
           ),
         ),
       ),
-      bottomSheet:
-      Container(
+      bottomSheet: Container(
         height: 70,
         decoration: BoxDecoration(
           color: Colors.white,
-         boxShadow: [
-           BoxShadow(
-             color: Colors.grey.shade800,
-             blurRadius: 20
-           )
-         ]
+          boxShadow: [BoxShadow(color: Colors.grey.shade800, blurRadius: 20)],
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -123,38 +114,50 @@ class _ProfileViewState extends State<ProfileView> {
             children: [
               //Edit Button
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 30,vertical: 15),
+                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                 decoration: BoxDecoration(
                   color: AppColors.primary,
-                  borderRadius: BorderRadius.circular(8)
+                  borderRadius: BorderRadius.circular(8),
                 ),
                 child: Row(
                   children: [
-                    CustomText(title: 'Edit Profile',color: Colors.white,),
+                    CustomText(title: 'Edit Profile', color: Colors.white),
                     Gap(5),
-                    Icon(CupertinoIcons.pencil,color: Colors.white,)
+                    Icon(CupertinoIcons.pencil, color: Colors.white),
                   ],
                 ),
               ),
               //Logout
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 30,vertical: 20),
+                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
                 decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(color: AppColors.primary),
-                    borderRadius: BorderRadius.circular(8)
+                  color: Colors.white,
+                  border: Border.all(color: AppColors.primary),
+                  borderRadius: BorderRadius.circular(8),
                 ),
-                child:Row(
+                child: Row(
                   children: [
-                    CustomText(title: 'Logout',color: AppColors.primary,),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) {
+                              return LoginView();
+                            },
+                          ),
+                        );
+                      },
+                      child: CustomText(
+                        title: 'Logout',
+                        color: AppColors.primary,
+                      ),
+                    ),
                     Gap(5),
-                    Icon(Icons.logout,color: AppColors.primary,)
+                    Icon(Icons.logout, color: AppColors.primary),
                   ],
                 ),
-
-              )
-
-
+              ),
             ],
           ),
         ),
