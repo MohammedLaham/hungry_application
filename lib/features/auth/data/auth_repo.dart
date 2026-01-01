@@ -45,35 +45,30 @@ class AuthRepo {
   }
 
   //Signup
-  Future<UserModel?> signup(
-    String name,
-    String email,
-    String password,
-
-  ) async {
+  Future<UserModel?> signup(String name, String email, String password) async {
     try {
       final response = await apiService.post('/register', {
-        'name':name,
-        'email':email,
-        'password':password
+        'name': name,
+        'email': email,
+        'password': password,
       });
-      if(response is ApiError){
+      if (response is ApiError) {
         throw response;
       }
-      if(response is Map<String,dynamic>){
-       final message=response['message'];
-       final code=response['code'];
-       final coder=int.tryParse(code);
-       final data=response['data'];
-       if(coder !=200 && coder!=201){
-         throw ApiError(message: message);
-       }
-       final user=UserModel.fromJson(response['data']);
-       if(user.token!=null){
-         await PrefHelpers.saveToken(user.token!);
-       }
-       return user;
-      }else{
+      if (response is Map<String, dynamic>) {
+        final message = response['message'];
+        final code = response['code'];
+        final coder = int.tryParse(code);
+        final data = response['data'];
+        if (coder != 200 && coder != 201) {
+          throw ApiError(message: message);
+        }
+        final user = UserModel.fromJson(response['data']);
+        if (user.token != null) {
+          await PrefHelpers.saveToken(user.token!);
+        }
+        return user;
+      } else {
         throw ApiError(message: 'message UnExpected Error From Server');
       }
     } on DioException catch (e) {
@@ -84,6 +79,18 @@ class AuthRepo {
   }
 
   //Get Profile Data
+  Future<UserModel?> getProfileData() async {
+    try {
+      final response = await apiService.get('/profile');
+      return UserModel.fromJson(response["data"]);
+    } on DioException catch (e) {
+      APIExceptions.handelError(e);
+    } catch (e) {
+      throw ApiError(message: e.toString());
+    }
+    return null;
+  }
+
   //update profile data
   //Logout
 }

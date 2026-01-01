@@ -1,9 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:food_application/core/constants/app_colors.dart';
+import 'package:food_application/core/network/api_error.dart';
+import 'package:food_application/features/auth/data/auth_repo.dart';
+import 'package:food_application/features/auth/data/user_model.dart';
 import 'package:food_application/features/auth/view/login_view.dart';
 import 'package:food_application/features/auth/widgets/custom_user_txt_field.dart';
+import 'package:food_application/shared/custom_snack.dart';
 import 'package:gap/gap.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../../shared/custom_text.dart';
 
@@ -18,86 +23,120 @@ class _ProfileViewState extends State<ProfileView> {
   final TextEditingController _name = TextEditingController();
   final TextEditingController _email = TextEditingController();
   final TextEditingController _address = TextEditingController();
+  UserModel? userModel;
+  AuthRepo authRepo = AuthRepo();
 
-  @override
-  void initState() {
-    _name.text = 'Mohammed';
-    _email.text = 'prog.khan.2002@gmail.com';
-    _address.text = 'Khanyounis';
-    super.initState();
+  Future<void> getProfileData() async {
+    try {
+      final user = await authRepo.getProfileData();
+      setState(() {
+        userModel = user;
+      });
+    } catch (e) {
+      String errorMsg = 'Error In Profile';
+      if (e is ApiError) {
+        errorMsg = e.message;
+      }
+      ScaffoldMessenger.of(context).showSnackBar(CustomSnack(errorMsg));
+    }
   }
 
   @override
+  void initState() {
+    getProfileData().then((v) {
+      print(userModel?.name);
+      print(userModel?.email);
+      print(userModel?.address);
+      print(userModel?.visa);
+    });
+    if (userModel != null) {
+      _name.text = userModel?.name ?? 'Mohammed';
+      _email.text = userModel?.email ?? 'prog.khan.2002@gmail.com';
+      _address.text = userModel?.address ==null? 'No_Input_Address':userModel!.address!;
+    }
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.primary,
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: AppColors.primary,
+        backgroundColor: Colors.white,
         leading: GestureDetector(
           onTap: () => Navigator.pop(context),
-          child: Icon(Icons.arrow_back, color: Colors.white),
+          child: Icon(Icons.arrow_back, color: Colors.grey.shade800),
         ),
         actions: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 0),
-            child: Icon(CupertinoIcons.settings, color: Colors.white),
+            child: Icon(CupertinoIcons.settings, color: Colors.grey.shade800),
           ),
         ],
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Center(
-                child: Container(
-                  height: 120,
-                  width: 120,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: NetworkImage(
-                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQytc93VfA29gwZ4w1ySdWjx1CSJBM6qGG3BA&s',
-                      ),
+          child: Skeletonizer(
+            enabled: userModel == null ,
+            child: Column(
+              children: [
+                Center(
+                  child: Container(
+                    height: 120,
+                    width: 120,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image:
+                          userModel!.image != null &&
+                              userModel!.image!.isNotEmpty
+                          ? DecorationImage(
+                              image: NetworkImage(userModel!.image!),
+                              fit: BoxFit.cover,
+                            )
+                          : null,
+                      border: Border.all(width: 3, color: AppColors.primary),
+                      color: Colors.grey.shade300,
                     ),
-                    border: Border.all(width: 5, color: Colors.white),
-                    borderRadius: BorderRadius.circular(15),
-                    color: Colors.grey.shade100,
                   ),
                 ),
-              ),
-              Gap(30),
-              CustomUserTxtField(controller: _name, label: 'Name'),
-              Gap(25),
-              CustomUserTxtField(controller: _name, label: 'Email'),
-              Gap(25),
-              CustomUserTxtField(controller: _name, label: 'Address'),
-              Gap(20),
-              Divider(),
-              Gap(10),
-              ListTile(
-                // onTap: () => setState(() =>  'Visa'),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
+                Gap(30),
+                CustomUserTxtField(controller: _name, label: userModel!.name),
+                Gap(25),
+                CustomUserTxtField(controller: _email, label: userModel!.email),
+                Gap(25),
+                CustomUserTxtField(
+                  controller: _address,
+                  label: userModel!.address,
                 ),
-                contentPadding: EdgeInsets.symmetric(
-                  vertical: 2,
-                  horizontal: 16,
+                Gap(20),
+                Divider(),
+                Gap(10),
+                ListTile(
+                  // onTap: () => setState(() =>  'Visa'),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  contentPadding: EdgeInsets.symmetric(
+                    vertical: 2,
+                    horizontal: 16,
+                  ),
+                  tileColor: Color(0xffF3F4F6),
+                  leading: Image.asset(
+                    'assets/icon/visa.png',
+                    width: 50,
+                    color: Colors.blue,
+                  ),
+                  title: CustomText(title: 'Debit card', color: Colors.black),
+                  subtitle: CustomText(
+                    title: userModel?.visa ?? "**** **** **** 2342",
+                    color: Colors.black,
+                    size: 14,
+                  ),
+                  trailing: CustomText(title: 'Default', color: Colors.black),
                 ),
-                tileColor: Color(0xffF3F4F6),
-                leading: Image.asset(
-                  'assets/icon/visa.png',
-                  width: 50,
-                  color: Colors.blue,
-                ),
-                title: CustomText(title: 'Debit card', color: Colors.black),
-                subtitle: CustomText(
-                  title: '**** ****** 0568',
-                  color: Colors.black,
-                ),
-                trailing: CustomText(title: 'Default', color: Colors.black),
-              ),
-              Gap(400),
-            ],
+                Gap(400),
+              ],
+            ),
           ),
         ),
       ),
