@@ -9,7 +9,6 @@ import 'package:food_application/features/auth/widgets/custom_user_txt_field.dar
 import 'package:food_application/shared/custom_snack.dart';
 import 'package:gap/gap.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-
 import '../../../shared/custom_text.dart';
 
 class ProfileView extends StatefulWidget {
