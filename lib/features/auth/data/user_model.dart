@@ -22,7 +22,7 @@ class UserModel {
       image: json['image'] ?? '',
       token: json['token'] ?? '',
       address: json['address'] ?? '',
-      visa: json['visa'] ,
+      visa: json['visa']?.toString() ,
     );
   }
 }

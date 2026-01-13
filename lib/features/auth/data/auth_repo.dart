@@ -92,5 +92,45 @@ class AuthRepo {
   }
 
   //update profile data
+  Future<UserModel?> updateProfileData({
+    required String name,
+    required String email,
+    required String address,
+    String? visa,
+    String? imagePath,
+  }) async {
+    try {
+      final formData = FormData.fromMap({
+        'name': name,
+        'email': email,
+        'address': address,
+
+        if (visa != null && visa.isNotEmpty) 'Visa': visa,
+        if (imagePath != null && imagePath.isNotEmpty)
+          'image': await MultipartFile.fromFile(
+            imagePath,
+            filename: 'profile.jpg',
+          ),
+      });
+      final response = await apiService.post('/update-profile', formData);
+      if (response is ApiError) {
+        throw response;
+      }
+      if (response is Map<String, dynamic>) {
+        final message = response['message'];
+        final code = response['code'];
+        final coder = int.tryParse(code);
+        if (coder != 200 && coder != 201) {
+          throw ApiError(message: message);
+        }
+      }
+    } on DioException catch (e) {
+      throw APIExceptions.handelError(e);
+    } catch (e) {
+      throw ApiError(message: e.toString());
+    }
+    return null;
+  }
+
   //Logout
 }

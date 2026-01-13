@@ -11,6 +11,7 @@ class CustomBtn extends StatelessWidget {
     this.width,
     this.color,
     this.height,
+    this.radius,
   });
 
   final String text;
@@ -18,7 +19,7 @@ class CustomBtn extends StatelessWidget {
   final double? width;
   final double? height;
   final Color? color;
-
+  final double? radius;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +31,7 @@ class CustomBtn extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
         decoration: BoxDecoration(
           color: color ?? AppColors.primary,
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(radius ?? 10),
         ),
         child: Center(
           child: CustomText(title: text, color: Colors.white),

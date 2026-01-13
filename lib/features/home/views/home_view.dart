@@ -56,22 +56,28 @@ class _HomeViewState extends State<HomeView> {
             SliverPadding(
               padding: EdgeInsets.symmetric(horizontal: 15),
               sliver: SliverGrid(
-                delegate: SliverChildBuilderDelegate(childCount: 6
-                    , (context, index,) =>
-                    //Card item
-                    GestureDetector(
-                      onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context){
-                          return ProductDetailsView();
-                        }));
-                      },
-                      child: CardItem(
-                        image: 'assets/test/test.png',
-                        text: 'Cheeseburger',
-                        descreption: 'Wendys Burger',
-                        rate: '4.9',
+                delegate: SliverChildBuilderDelegate(
+                  childCount: 6,
+                  (context, index) =>
+                      //Card item
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return ProductDetailsView();
+                              },
+                            ),
+                          );
+                        },
+                        child: CardItem(
+                          image: 'assets/test/test.png',
+                          text: 'Cheeseburger',
+                          descreption: 'Wendys Burger',
+                          rate: '4.9',
+                        ),
                       ),
-                    )
                 ),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
